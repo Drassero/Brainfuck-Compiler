@@ -1,21 +1,32 @@
 package com.drassero.bfcompiler;
 
-import com.drassero.bfcompiler.util.Compiler;
+import com.drassero.bfcompiler.controller.RootController;
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
-import java.util.Scanner;
+import java.io.IOException;
 
-public class Main {
+public class Main extends Application {
+
+    public static final String APP_NAME = "Brainfuck Compiler";
+    public static final int BYTES_ARRAY_LENGTH = 30000;
+
+    @Override
+    public void start(Stage primaryStage) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("scene/RootScene.fxml"));
+        AnchorPane root = loader.load();
+        RootController controller = loader.getController();
+        controller.setMain(this);
+        primaryStage.setTitle(Main.APP_NAME);
+        primaryStage.setScene(new Scene(root, root.getWidth(), root.getHeight()));
+        primaryStage.show();
+    }
 
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Statement ?");
-        String statement = scanner.nextLine();
-        System.out.println("Input ?");
-        String input = scanner.nextLine();
-        System.out.println("Length ?");
-        int length = scanner.nextInt();
-        Compiler compiler = new Compiler(statement, input, length).init();
-        System.out.println(compiler.run());
+        launch(args);
     }
 
 }

@@ -4,9 +4,9 @@ import java.util.Iterator;
 
 public class Compiler {
 
-    private String statement;
-    private String input;
-    private int length;
+    private final String statement;
+    private final String input;
+    private final int length;
 
     public Compiler(String statement, String input, int length) {
         this.statement = statement;
@@ -73,6 +73,8 @@ public class Compiler {
                 case ',' -> {
                     if(inputIterator.hasNext()) {
                         bytes[ptr] = inputIterator.next();
+                    } else {
+                        bytes[ptr] = 0;
                     }
                 }
                 case '[' -> activeLoops++;
