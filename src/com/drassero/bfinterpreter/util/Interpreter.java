@@ -1,4 +1,4 @@
-package com.drassero.bfcompiler.util;
+package com.drassero.bfinterpreter.util;
 
 import java.util.Iterator;
 import java.util.Optional;

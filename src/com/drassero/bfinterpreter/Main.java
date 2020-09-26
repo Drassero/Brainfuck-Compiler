@@ -1,6 +1,6 @@
-package com.drassero.bfcompiler;
+package com.drassero.bfinterpreter;
 
-import com.drassero.bfcompiler.controller.RootController;
+import com.drassero.bfinterpreter.controller.RootController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
