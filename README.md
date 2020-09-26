@@ -12,6 +12,6 @@ To execute brainfuck code you have to write it in the **'Code'** text area and t
 Here are some errors you can get while running code :
 Explanation|Error text
 -|-
-Opening not closed loops or closing not opened loops|Invalid use of loops operators
-Not ASCII characters present in input text|Invalid input ! Only ASCII characters permitted
-Not ASCII characters present in outputtext (wrong code)|Invalid output ! Only ASCII characters permitted
+*Invalid use of loops operators*|**Opening not closed loops or closing not opened loops**
+*Invalid input ! Only ASCII characters permitted*|**Not ASCII characters** present in input text
+*Invalid output ! Only ASCII characters permitted*|**Not ASCII characters** present in output text (**wrong code**)
