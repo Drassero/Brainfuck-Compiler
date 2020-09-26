@@ -1,14 +1,20 @@
 package com.drassero.bfcompiler.util;
 
 import java.util.Iterator;
+import java.util.Optional;
 
-public class Compiler {
+public class Interpreter {
+
+    public static final Optional<String> INVALID_LOOPS_ERROR = Optional.of("Invalid use of loops operators"),
+            INVALID_INPUT = Optional.of("Invalid input ! Only ASCII characters permitted"),
+            INVALID_OUTPUT = Optional.of("Invalid output ! Only ASCII characters permitted"),
+            NO_ERROR = Optional.empty();
 
     private final String statement;
     private final String input;
     private final int length;
 
-    public Compiler(String statement, String input, int length) {
+    public Interpreter(String statement, String input, int length) {
         this.statement = statement;
         this.input = input;
         this.length = length;
@@ -19,25 +25,7 @@ public class Compiler {
     private int ptr, activeLoops;
     private Iterator<Integer> inputIterator;
 
-    public boolean isValid() {
-        int activeLoops = 0;
-        for(char c : statement.toCharArray()) {
-            switch(c) {
-                case '[' -> activeLoops++;
-                case ']' -> activeLoops--;
-            }
-        }
-        boolean onlyAscii = true;
-        for(char c : input.toCharArray()) {
-            if((int) c > 127) {
-                onlyAscii = false;
-                break;
-            }
-        }
-        return activeLoops == 0 && onlyAscii;
-    }
-
-    public Compiler init() {
+    public Interpreter init() {
         output = new StringBuilder();
         bytes = new int[length];
         ptr = 0;
@@ -68,6 +56,30 @@ public class Compiler {
                 }
             }
         }
+    }
+
+    public Optional<String> isValid() {
+        int activeLoops = 0;
+        for(char c : statement.toCharArray()) {
+            switch(c) {
+                case '[' -> activeLoops++;
+                case ']' -> activeLoops--;
+            }
+        }
+        if(activeLoops != 0) {
+            return INVALID_LOOPS_ERROR;
+        }
+        for(char c : input.toCharArray()) {
+            if(c > 127) {
+                return INVALID_INPUT;
+            }
+        }
+        for(char c : output.toString().toCharArray()) {
+            if(c > 127) {
+                return INVALID_OUTPUT;
+            }
+        }
+        return NO_ERROR;
     }
 
 }

@@ -2,11 +2,13 @@ package com.drassero.bfcompiler.controller;
 
 import com.drassero.bfcompiler.Main;
 import com.drassero.bfcompiler.util.History;
+import com.drassero.bfcompiler.util.Interpreter;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
+
+import java.util.Optional;
 
 public class RootController {
 
@@ -22,13 +24,20 @@ public class RootController {
     private TextArea outputTextArea;
     @FXML
     private ListView<History> historyListView;
-    @FXML
-    private GridPane memoryViewGridPane;
 
     @FXML
-    private void initialize() {
-        memoryViewGridPane.addColumn(COLUMNS - 1);
-        memoryViewGridPane.addRow((Main.BYTES_ARRAY_LENGTH - COLUMNS) / COLUMNS, new Label("0"));
+    private void onRun() {
+        Interpreter interpreter = new Interpreter(codeTextArea.getText(), inputTextArea.getText(), Main.BYTES_ARRAY_LENGTH).init();
+        String output = interpreter.run();
+        Optional<String> error = interpreter.isValid();
+        if(error.isPresent()) {
+            outputTextArea.setText(error.get());
+        } else {
+            outputTextArea.setText(output);
+            for(char c : output.toCharArray()) {
+                System.out.println(c > 127);
+            }
+        }
     }
 
     public void setMain(Main main) {
