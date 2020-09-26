@@ -20,6 +20,29 @@ public class Interpreter {
         this.length = length;
     }
 
+    public Optional<String> isStatementValid() {
+        int activeLoops = 0;
+        for(char c : statement.toCharArray()) {
+            switch(c) {
+                case '[' -> activeLoops++;
+                case ']' -> activeLoops--;
+            }
+        }
+        if(activeLoops != 0) {
+            return INVALID_LOOPS_ERROR;
+        }
+        return NO_ERROR;
+    }
+
+    public Optional<String> isInputValid() {
+        for(char c : input.toCharArray()) {
+            if(c > 127) {
+                return INVALID_INPUT;
+            }
+        }
+        return NO_ERROR;
+    }
+
     private StringBuilder output;
     private int[] bytes;
     private int ptr;
@@ -76,22 +99,7 @@ public class Interpreter {
         }
     }
 
-    public Optional<String> isValid() {
-        int activeLoops = 0;
-        for(char c : statement.toCharArray()) {
-            switch(c) {
-                case '[' -> activeLoops++;
-                case ']' -> activeLoops--;
-            }
-        }
-        if(activeLoops != 0) {
-            return INVALID_LOOPS_ERROR;
-        }
-        for(char c : input.toCharArray()) {
-            if(c > 127) {
-                return INVALID_INPUT;
-            }
-        }
+    public Optional<String> isOutputValid() {
         for(char c : output.toString().toCharArray()) {
             if(c > 127) {
                 return INVALID_OUTPUT;
