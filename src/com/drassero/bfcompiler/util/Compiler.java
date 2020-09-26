@@ -52,21 +52,10 @@ public class Compiler {
     }
 
     private void run(String statement) {
-        StringBuilder loopStatement = new StringBuilder();
         for(char c : statement.toCharArray()) {
-            if(activeLoops > 0) {
-                if(c == ']' && --activeLoops == 0) {
-                    while(bytes[ptr] > 0) {
-                        run(loopStatement.toString());
-                    }
-                    continue;
-                }
-                loopStatement.append(c);
-                continue;
-            }
             switch(c) {
                 case '>' -> ptr = ptr + 1 == length ? 0 : ptr + 1;
-                case '<' -> ptr = ptr - 1 == -1 ? length - 1 : ptr - 1;
+                case '<' -> ptr = ptr - 1 == -1 ? length -1 : ptr - 1;
                 case '+' -> bytes[ptr] = bytes[ptr] + 1 == 256 ? 0 : bytes[ptr] + 1;
                 case '-' -> bytes[ptr] = bytes[ptr] - 1 == -1 ? 255 : bytes[ptr] - 1;
                 case '.' -> output.append((char) bytes[ptr]);
@@ -77,8 +66,6 @@ public class Compiler {
                         bytes[ptr] = 0;
                     }
                 }
-                case '[' -> activeLoops++;
-                case ']' -> activeLoops--;
             }
         }
     }
