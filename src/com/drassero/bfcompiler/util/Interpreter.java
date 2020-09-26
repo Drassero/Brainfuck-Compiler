@@ -22,7 +22,7 @@ public class Interpreter {
 
     private StringBuilder output;
     private int[] bytes;
-    private int ptr, activeLoops;
+    private int ptr;
     private Iterator<Integer> inputIterator;
 
     public Interpreter init() {
@@ -30,7 +30,6 @@ public class Interpreter {
         bytes = new int[length];
         ptr = 0;
         inputIterator = input.chars().iterator();
-        activeLoops = 0;
         return this;
     }
 
@@ -40,7 +39,25 @@ public class Interpreter {
     }
 
     private void run(String statement) {
+        if(statement.isEmpty()) {
+            return;
+        }
+        int activeLoops = 0;
+        StringBuilder loopStatement = new StringBuilder();
         for(char c : statement.toCharArray()) {
+            if(activeLoops > 0) {
+                if(c == '[') {
+                    activeLoops++;
+                } else if(c == ']' && --activeLoops == 0) {
+                    while(bytes[ptr] > 0) {
+                        run(loopStatement.toString());
+                    }
+                    loopStatement.setLength(0);
+                    continue;
+                }
+                loopStatement.append(c);
+                continue;
+            }
             switch(c) {
                 case '>' -> ptr = ptr + 1 == length ? 0 : ptr + 1;
                 case '<' -> ptr = ptr - 1 == -1 ? length -1 : ptr - 1;
@@ -54,6 +71,7 @@ public class Interpreter {
                         bytes[ptr] = 0;
                     }
                 }
+                case '[' -> activeLoops++;
             }
         }
     }

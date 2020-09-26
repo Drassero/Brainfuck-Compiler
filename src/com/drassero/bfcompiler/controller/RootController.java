@@ -6,7 +6,6 @@ import com.drassero.bfcompiler.util.Interpreter;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
-import javafx.scene.layout.GridPane;
 
 import java.util.Optional;
 
@@ -34,9 +33,6 @@ public class RootController {
             outputTextArea.setText(error.get());
         } else {
             outputTextArea.setText(output);
-            for(char c : output.toCharArray()) {
-                System.out.println(c > 127);
-            }
         }
     }
 
